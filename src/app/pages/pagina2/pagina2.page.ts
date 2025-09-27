@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { Validaciones } from 'src/app/services/validaciones';
 
 @Component({
   selector: 'app-pagina2',
@@ -10,46 +11,39 @@ import { ToastController } from '@ionic/angular';
 })
 export class Pagina2Page implements OnInit {
 
-  CrearUser: any ={
-    usuario:"",
-    password:"",
-    correo: "",
-    telefono:""
-  }
 
-  constructor(private toastController: ToastController, private router:Router) { }
+  usuario: string = "";
+  password: string = "";
+  correo: string = "";
+  telefono: string = "";
+
+
+  constructor(private toastController: ToastController, private router:Router, private validaciones: Validaciones) { }
 
   vacio: string = "";
 
   ngOnInit() {
   }
 
-  
-  Creacion(){
-    console.log(this.CrearUser)
-    this.presentToast('top',"Iniciando sesión..."+this.CrearUser.usuario)
-    this.router.navigate(['/inicio'])
-  }
-
-    validar(){
-    if (this.validateModel(this.CrearUser)){
-      let navigationExtras : NavigationExtras = {state: {login: this.CrearUser}};
-      this.router.navigate(['/home'], navigationExtras)
-    }else{
-      this.presentToast("middle", "Error: Falta " + this.vacio,2000)
+ validarVacio(){
+    if (!this.validaciones.obligatorio(this.usuario)){
+      this.presentToast('middle','Falta usuario');
+      return;
     }
-  }
-
-  validateModel(model: any){
-    for(var[key,value] of Object.entries(model)){
-      if (value==""){
-        this.vacio = key;
-        return false;
-      }
+    if (!this.validaciones.obligatorio(this.password)){
+      this.presentToast('middle','Falta contraseña');
+      return;
     }
-    return true;
+    if (!this.validaciones.validaMail(this.correo)){
+      this.presentToast('middle','Correo inválido');
+      return;
+    }
+    if (!this.validaciones.validaNum(this.telefono)){
+      this.presentToast('middle','Telefono inválido');
+      return;
+    }
+    this.router.navigate(['/home'])
   }
-
 
     async presentToast(position: 'top' | 'middle' | 'bottom', msg : string, duration?:number ){
     const toast = await this.toastController.create({
