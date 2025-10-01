@@ -1,35 +1,40 @@
 <ion-content [fullscreen]="true">
   <ion-card>
   <ion-card-header>
-    <ion-card-title>Iniciar cuenta</ion-card-title>
+    <div style="text-align: center;">
+          <ion-card-title>Iniciar cuenta</ion-card-title>
+    </div>
     
   </ion-card-header>
   <ion-card-content>
     <div style="text-align: center; margin-top: 20px;">
     <img 
-      src="https://images.steamusercontent.com/ugc/862864563535938328/F351223488E626F24904317B13080D87AAF783C6/?imw=512&&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false" 
+      src="https://images.squarespace-cdn.com/content/v1/606d159a953867291018f801/1617765260761-95ZQRWCDRLOSBXZZKW5P/cp_thumbs__0003_HD-1.jpg"
       alt="Imagen desde internet" 
       style="width: 250px; height: 250px; border-radius: 10px;" />
-  </div>
+    </div>
     <ion-list>
       <ion-item>
         <ion-thumbnail slot="start">
-          <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+          <img alt="Silhouette of mountains" src="https://images.gamebanana.com/img/ss/mods/660c47886c348.jpg" />
         </ion-thumbnail>
-         <ion-input label="Usuario" placeholder="Ingrese nombre de usuario"[(ngModel)]="usuario"></ion-input>
+         <ion-input label="Usuario" placeholder=""[(ngModel)]="usuario"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-thumbnail slot="start">
-          <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+          <img alt="Silhouette of mountains" src="https://images.gamebanana.com/img/ss/mods/660c47886c348.jpg" />
         </ion-thumbnail>
         <ion-input label="Clave" type="password" [(ngModel)]="pass"></ion-input>
       </ion-item>
     </ion-list>
-  <br>
-  <ion-button expand="block" (click)="validarVacio()">Iniciar sesión</ion-button>
-  <br>
-  <a href=".\pagina2"> Crear cuenta</a>
+    <br>
+    <ion-button expand="block" (click)="validarVacio()">Iniciar sesión</ion-button>
+    <br>
+    <div style="display: flex; justify-content: space-between;">
+      <a href=".\pagina2"> Crear cuenta</a>
+      <a href=".\recuperapass">Cambiar contraseña</a>
+    </div>
   </ion-card-content>
 </ion-card>
 </ion-content>

@@ -20,8 +20,6 @@ export class Pagina2Page implements OnInit {
 
   constructor(private toastController: ToastController, private router:Router, private validaciones: Validaciones) { }
 
-  vacio: string = "";
-
   ngOnInit() {
   }
 
@@ -42,7 +40,11 @@ export class Pagina2Page implements OnInit {
       this.presentToast('middle','Telefono inválido');
       return;
     }
-    this.router.navigate(['/home'])
+    let NavigationExtras: NavigationExtras = {
+      state: {usuario: this.usuario}
+    }
+    this.router.navigate(['/home'], NavigationExtras)
+
   }
 
     async presentToast(position: 'top' | 'middle' | 'bottom', msg : string, duration?:number ){
