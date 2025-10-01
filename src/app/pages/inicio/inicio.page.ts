@@ -34,7 +34,10 @@ export class InicioPage implements OnInit {
       this.presentToast('middle','Falta contraseña');
       return;
     }
-    this.router.navigate(['/home'])
+    let NavigationExtras: NavigationExtras = {
+    state: {usuario: this.usuario}
+    }
+    this.router.navigate(['/home'], NavigationExtras)
   }
 
   async presentToast(position: 'top' | 'middle' | 'bottom', msg : string, duration?:number ){

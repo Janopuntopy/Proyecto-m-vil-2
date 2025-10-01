@@ -22,4 +22,7 @@ export class Validaciones {
     return value.length >= minLength && /^[0-9]+$/.test(value);
   }
 
+  recuperaContraseña(){    
+  }
+
 }
