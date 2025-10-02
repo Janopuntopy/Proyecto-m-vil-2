@@ -11,10 +11,11 @@
       alt="Imagen desde internet" 
       style="width: 250px; height: 250px; border-radius: 10px;" />
   </div>
+<ion-card class="animated-card">
     <ion-list>
       <ion-item>
         <ion-thumbnail slot="start">
-          <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+          <img alt="Silhouette of mountains" src="" />
         </ion-thumbnail>
          <ion-input label="Usuario" placeholder="Ingrese nombre de usuario"[(ngModel)]="usuario"></ion-input>
       </ion-item>
@@ -26,6 +27,7 @@
         <ion-input label="Clave" type="password" [(ngModel)]="pass"></ion-input>
       </ion-item>
     </ion-list>
+</ion-card>
   <br>
   <ion-button expand="block" (click)="validarVacio()">Iniciar sesión</ion-button>
   <br>
