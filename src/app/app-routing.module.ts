@@ -20,10 +20,15 @@ const routes: Routes = [
     loadChildren: () => import('./pages/pagina2/pagina2.module').then( m => m.Pagina2PageModule)
   },
   {
+    path: 'recuperapass',
+    loadChildren: () => import('./pages/recuperapass/recuperapass.module').then( m => m.RecuperapassPageModule)
+  },
+  {
     //ESTE PATH SIEMPRE VA AL FINAL, POR SU LECTURA SECUENCIAL
     path: '**',
     loadChildren: () => import('./pages/noencontrado/noencontrado.module').then( m => m.NoencontradoPageModule)
   },
+
 
 ];
 
