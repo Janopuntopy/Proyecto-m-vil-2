@@ -1,7 +1,7 @@
 export interface Perfiles {
-    nombreUsusario: string;
-    contraseñaUsuario: string;
-    correoUsuario: string;
-    telefonoUsuario: number;
+    nombre: string;
+    password: string;
+    correo: string;
+    telefono: number;
 
 }
