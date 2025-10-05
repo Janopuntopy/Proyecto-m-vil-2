@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-componentes',
-  templateUrl: './componentes.component.html',
-  styleUrls: ['./componentes.component.scss'],
+  selector: 'app-componente3',
+  templateUrl: './componente3.component.html',
+  styleUrls: ['./componente3.component.scss'],
   standalone:false,
 })
-export class Componente2Component  implements OnInit {
+export class Componente3Component  implements OnInit {
   generos:any[]=[
     {id:1,genero:"Urbano"},
     {id:2,genero:"Clásico"},
