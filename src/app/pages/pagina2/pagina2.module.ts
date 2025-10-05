@@ -8,6 +8,9 @@ import { Pagina2PageRoutingModule } from './pagina2-routing.module';
 
 import { Pagina2Page } from './pagina2.page';
 
+
+
+
 @NgModule({
   imports: [
     CommonModule,

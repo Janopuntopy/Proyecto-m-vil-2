@@ -23,7 +23,11 @@ const routes: Routes = [
     //ESTE PATH SIEMPRE VA AL FINAL, POR SU LECTURA SECUENCIAL
     path: '**',
     loadChildren: () => import('./pages/noencontrado/noencontrado.module').then( m => m.NoencontradoPageModule)
+  },  {
+    path: 'paginacomponente',
+    loadChildren: () => import('./pages/paginacomponente/paginacomponente.module').then( m => m.PaginacomponentePageModule)
   },
+
 
 ];
 
