@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Bdlocal } from 'src/app/services/bdlocal';
+import { Storageservice } from 'src/app/services/storageservice';
 import { Validaciones } from 'src/app/services/validaciones';
 
 @Component({
@@ -12,15 +13,14 @@ import { Validaciones } from 'src/app/services/validaciones';
 })
 export class Pagina2Page implements OnInit {
 
-
   usuario: string = "";
   correo: string = "";
   password: string = "";
   telefono: string = "";
 
-  perfiles: any[] = [];
+  perfiles: any = [];
 
-  constructor(private toastController: ToastController, private router:Router, private validaciones: Validaciones, private bdlocal: Bdlocal) { }
+  constructor(private toastController: ToastController, private router:Router, private validaciones: Validaciones, private bdlocal: Bdlocal, private storageservice: Storageservice) { }
 
   ngOnInit() {
   }
@@ -30,12 +30,12 @@ export class Pagina2Page implements OnInit {
       this.presentToast('middle','Falta usuario');
       return;
     }
-    if (!this.validaciones.validaMail(this.correo)){
-      this.presentToast('middle','Correo inválido');
+    if (!this.validaciones.obligatorio(this.password)){
+      this.presentToast('middle','Falta contraseña');
       return;
     }
-        if (!this.validaciones.obligatorio(this.password)){
-      this.presentToast('middle','Falta contraseña');
+    if (!this.validaciones.validaMail(this.correo)){
+      this.presentToast('middle','Correo inválido');
       return;
     }
     if (!this.validaciones.validaNum(this.telefono)){
@@ -44,6 +44,7 @@ export class Pagina2Page implements OnInit {
     }
 
     this.bdlocal.agregarPerfil(this.usuario,this.correo,this.password,this.telefono)
+    this.storageservice.guardarPerfiles(this.usuario, this.correo, this.password, this.telefono)
 
     this.presentToast('middle','Usuario guardado con éxito');
 
@@ -60,7 +61,7 @@ export class Pagina2Page implements OnInit {
   }
   
   async cargarPerfiles() {
-    this.perfiles = this.bdlocal.cargarPerfiles();
+    this.perfiles = this.bdlocal.fetchPerfiles();
   }
 
   async presentToast(position: 'top' | 'middle' | 'bottom', msg : string, duration?:number ){
