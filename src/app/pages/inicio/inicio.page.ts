@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { Bdlocal } from 'src/app/services/bdlocal';
 import { Validaciones } from 'src/app/services/validaciones';
 
 @Component({
@@ -13,15 +14,14 @@ export class InicioPage implements OnInit {
 
   //declarar un modelo para validar
   usuario: string = '';
-  pass: string = '';
+  password: string = ''; 
 
-  //defino una variable global para guardar el nombre(key) del campo no ingresado
- 
-
-  constructor(private toastController: ToastController, private router:Router, private validaciones: Validaciones) { }
+  constructor(private bdlocal: Bdlocal, private toastController: ToastController, private router:Router, private validaciones: Validaciones) { }
 
   ngOnInit() {
+    
   }
+
   //validateModel sirve para validar que singrese algo en los campos del html medieante su modelo
 
   validarVacio(){
@@ -30,14 +30,25 @@ export class InicioPage implements OnInit {
       return;
     }
 
-    if (!this.validaciones.obligatorio(this.pass)){
+    if (!this.validaciones.obligatorio(this.password)){
       this.presentToast('middle','Falta contraseña');
       return;
     }
-    let NavigationExtras: NavigationExtras = {
-    state: {usuario: this.usuario}
+    this.inicioSesion();
+  }
+
+  /*/       let NavigationExtras: NavigationExtras = {
+      state: {usuario: this.usuario}
+*/
+
+  async inicioSesion(){
+    const exitoso = await this.bdlocal.login(this.usuario, this.password)
+    if (exitoso){
+      this.presentToast('middle', 'Inicio exitoso!');
+      this.router.navigate(['/home']);    
+    }else{
+      this.presentToast('middle', 'Usuario o contraseña incorrectos');
     }
-    this.router.navigate(['/home'], NavigationExtras)
   }
 
   async presentToast(position: 'top' | 'middle' | 'bottom', msg : string, duration?:number ){
@@ -50,6 +61,4 @@ export class InicioPage implements OnInit {
     await toast.present();
     
   }
- 
-
 }

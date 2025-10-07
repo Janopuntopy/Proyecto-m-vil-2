@@ -9,8 +9,25 @@
 <ion-content [fullscreen]="true">
   <ion-card>
     <ion-card-header>
-      <ion-card-title>aqui deberia ir algo
-      </ion-card-title>
+      <ion-card-title>ver usuario</ion-card-title>
+      <ion-button expand="block" (click)="mostrarListaStorage()">Mostrar usuarios</ion-button>
+      <ion-list *ngIf="perfil.length > 0; else noUsuarios">
+      <ion-item *ngFor="let item of perfil">
+        <ion-label>
+          <h2>{{ item.nombre }}</h2>
+          <p>{{ item.correo }}</p>
+        </ion-label> 
+      </ion-item>
+      </ion-list>
     </ion-card-header>
+
+    <ng-template #noUsuarios>
+      <ion-text color="medium">
+        <p class="ion-text-center">No hay usuarios registrados.</p>
+      </ion-text>
+    </ng-template>
+
+    <a href=".\inicio"> Volver</a>
+
   </ion-card>
 </ion-content>

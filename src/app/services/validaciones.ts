@@ -25,4 +25,8 @@ export class Validaciones {
   recuperaContraseña(){    
   }
 
+  usuarioExiste(){
+
+  }
+
 }

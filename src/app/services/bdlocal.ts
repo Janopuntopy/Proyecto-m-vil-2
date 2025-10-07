@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
-import { Perfiles } from '../interfaces/perfiles';
 import { Platform, ToastController } from '@ionic/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { __awaiter } from 'tslib';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Perfil } from '../clase/perfil';
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,16 +14,11 @@ export class Bdlocal {
   public database!: SQLiteObject; 
   tblPerfil:string = "CREATE TABLE IF NOT EXISTS perfiles(id INTEGER PRIMARY KEY autoincrement, nombre VARCHAR(100) NOT NULL, correo VARCHAR(100) NOT NULL, password VARCHAR(255) NOT NULL, telefono VARCHAR(50) NOT NULL);"; 
 
-  listaPerfiles = new BehaviorSubject<Perfiles[]>([]); 
+  listaPerfiles = new BehaviorSubject<Perfil[]>([]); 
   private isDbReady: 
   BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  perfiles: Perfiles[] = [];
-  private _storage: Storage | null=null;
-
-  constructor(private sqlite: SQLite, private platform: Platform, private storage: Storage, public toastController: ToastController){
-    this.Init();
-    this.cargarPerfiles();
+  constructor(private sqlite: SQLite, private platform: Platform, public toastController: ToastController){
     this.crearBD();
   }
 
@@ -41,7 +36,7 @@ export class Bdlocal {
     }) 
   } 
   
-   async crearTablas() { 
+  async crearTablas() { 
     try { 
       await this.database.executeSql(this.tblPerfil, []); 
       this.presentToast("Tabla creada"); 
@@ -52,12 +47,9 @@ export class Bdlocal {
     } 
   }
 
-  cargarPerfiles() { 
-    if (!this.database) {
-    console.error("❌ La base de datos no está inicializada aún");
-    return [];
-  }
-    let items: Perfiles[] = []; 
+  //trae todos los datos existentes
+  cargarPerfiles() {
+    let items: Perfil[] = []; 
     this.database.executeSql('SELECT * FROM perfiles', []) 
       .then(res => { 
         if (res.rows.length > 0) { 
@@ -72,55 +64,46 @@ export class Bdlocal {
         } 
       }); 
     this.listaPerfiles.next(items);
-    return items;
-  } 
-
-  async Init(){
-    const storage = await this.storage.create();
-    this._storage = storage;
   }
 
-  guardarPerfiles(nombre: string, password: string, correo: string, telefono: number){
-    const existe = this.perfiles.find(c => c.correo === correo);
-    if (!existe){
-      this.perfiles.unshift({nombre:nombre, password:password, correo:correo, telefono:telefono})
-      this._storage?.set('perfiles',this.perfiles);
-      this.presentToast("Usuario agregado con éxito!")
-    }else{
-      this.presentToast("Ya existe un usuario con el correo ingresado.")
-    }
-  }
-
-   async agregarPerfil(nombre: any, correo: any, password: any, telefono: any) { 
+  //inserta perfil en la tabla
+  async agregarPerfil(nombre: any, correo: any, password: any, telefono: any) { 
     let data = [nombre,correo,password,telefono]; 
     await this.database.executeSql('INSERT INTO perfiles(nombre,correo,password,telefono) VALUES(?,?,?,?)', data); 
     this.cargarPerfiles();
   }
 
+  //verifica inicio de sesion con usuario existente
+  async login(correo: string, password: string): Promise<boolean>{
+    if (!this.database) return false;
 
-  async quitarPerfiles(correo: string){
-    const existe=this.perfiles.find(c =>c.correo === correo)
-    if (existe){
-      this.perfiles=this.perfiles.filter(c=>c.correo!== correo);
-      this._storage?.set('perfiles',this.perfiles);
-      this.presentToast("Se ha eliminado perfil")
-    }else{
-      this.presentToast("El correo no se encuentra registrado")
+    try{
+      const resultado = await this.database.executeSql(
+        'SELECT * FROM perfiles WHERE correo = ? AND password = ?',
+        [correo, password]
+      );
+      
+      return resultado.rows.length > 0;
+    }catch (e){
+      this.presentToast('Usuario incorrecto');
+      return false;
     }
   }
 
-  async borrarBD(){
-    await this._storage?.clear();
-    this.perfiles=[];
-    console.log(this.perfiles.length);
-    this.presentToast("Se ha eliminado la BD");
+  async autenticar(): Promise<boolean>{
+    const resultado = await this.database.executeSql(
+      'SELECT * FROM perfiles WHERE login = 1 LIMIT 1',
+      []
+    );
+    return resultado.rows.length > 0;
   }
+
 
   dbState() { 
-      return this.isDbReady.asObservable(); 
-    }
+    return this.isDbReady.asObservable(); 
+  }
 
-  fetchNoticias(): Observable<Perfiles[]> { 
+  fetchPerfiles(): Observable<Perfil[]> { 
     return this.listaPerfiles.asObservable(); 
   }
 
