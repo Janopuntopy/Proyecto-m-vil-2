@@ -25,11 +25,16 @@ const routes: Routes = [
     path: 'recuperapass',
     loadChildren: () => import('./pages/recuperapass/recuperapass.module').then( m => m.RecuperapassPageModule)
   },
+    {
+    path: 'consumoapi',
+    loadChildren: () => import('./pages/consumoapi/consumoapi.module').then( m => m.ConsumoapiPageModule)
+  },
   {
     //ESTE PATH SIEMPRE VA AL FINAL, POR SU LECTURA SECUENCIAL
     path: '**',
     loadChildren: () => import('./pages/noencontrado/noencontrado.module').then( m => m.NoencontradoPageModule)
-  },
+  }
+
 
 
 ];

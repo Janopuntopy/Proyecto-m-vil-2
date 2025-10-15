@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { Perfiles } from '../interfaces/perfiles';
 import { Storage } from '@ionic/storage-angular';
+import { Bdlocal } from './bdlocal';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class Storageservice {
   perfiles: Perfiles[] = [];
   private _storage: Storage | null=null;
 
-  constructor(private storage: Storage, public toastController: ToastController){
+  constructor(private bdlocal: Bdlocal, private storage: Storage, public toastController: ToastController){
     this.Init();
     this.cargarPerfil();
   }
@@ -56,6 +57,17 @@ export class Storageservice {
     this.perfiles=[];
     console.log(this.perfiles.length);
     this.presentToast("Se ha eliminado la BD");
+  }
+
+//metodo para saber si hay usuario registrado consultando a SQLite
+  async usuarioExiste(): Promise<boolean>{
+    try{
+      const usuarioTrue = this.bdlocal.cargarPerfiles();
+      return usuarioTrue.length > 0;
+    }catch(error){
+      console.error('Error al consultar usuarios: ', error)
+      return false;
+    }
   }
 
   async presentToast(mensaje: string){

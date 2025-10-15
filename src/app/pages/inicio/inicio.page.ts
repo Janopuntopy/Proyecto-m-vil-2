@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Bdlocal } from 'src/app/services/bdlocal';
+import { Storageservice } from 'src/app/services/storageservice';
 import { Validaciones } from 'src/app/services/validaciones';
 
 @Component({
@@ -16,7 +17,7 @@ export class InicioPage implements OnInit {
   usuario: string = '';
   password: string = ''; 
 
-  constructor(private bdlocal: Bdlocal, private toastController: ToastController, private router:Router, private validaciones: Validaciones) { }
+  constructor(private storage: Storageservice, private bdlocal: Bdlocal, private toastController: ToastController, private router:Router, private validaciones: Validaciones) { }
 
   ngOnInit() {
     
@@ -29,7 +30,6 @@ export class InicioPage implements OnInit {
       this.presentToast('middle','Falta usuario');
       return;
     }
-
     if (!this.validaciones.obligatorio(this.password)){
       this.presentToast('middle','Falta contraseña');
       return;
@@ -37,17 +37,16 @@ export class InicioPage implements OnInit {
     this.inicioSesion();
   }
 
-  /*/       let NavigationExtras: NavigationExtras = {
-      state: {usuario: this.usuario}
-*/
-
   async inicioSesion(){
-    const exitoso = await this.bdlocal.login(this.usuario, this.password)
+    const exitoso = await this.storage.usuarioExiste()
     if (exitoso){
-      this.presentToast('middle', 'Inicio exitoso!');
-      this.router.navigate(['/home']);    
+      this.presentToast('top', 'Inicio exitoso!');
+      let navigationExtras : NavigationExtras = {
+        state : {usuario : this.usuario}
+      }
+      this.router.navigate(['/home'], navigationExtras);    
     }else{
-      this.presentToast('middle', 'Usuario o contraseña incorrectos');
+      this.presentToast('top', 'Usuario o contraseña incorrectos');
     }
   }
 
