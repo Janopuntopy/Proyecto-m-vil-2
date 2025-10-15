@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage-angular';
 import { Platform, ToastController } from '@ionic/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { __awaiter } from 'tslib';
@@ -12,7 +11,7 @@ import { Perfil } from '../clase/perfil';
 })
 export class Bdlocal {
   public database!: SQLiteObject; 
-  tblPerfil:string = "CREATE TABLE IF NOT EXISTS perfiles(id INTEGER PRIMARY KEY autoincrement, nombre VARCHAR(100) NOT NULL, correo VARCHAR(100) NOT NULL, password VARCHAR(255) NOT NULL, telefono VARCHAR(50) NOT NULL);"; 
+  tblPerfil:string = "CREATE TABLE IF NOT EXISTS perfiles(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(100) NOT NULL, correo VARCHAR(100) NOT NULL, password VARCHAR(255) NOT NULL, telefono VARCHAR(50) NOT NULL, login INTEGER DEFAULT 0);"; 
 
   listaPerfiles = new BehaviorSubject<Perfil[]>([]); 
   private isDbReady: 
@@ -64,6 +63,7 @@ export class Bdlocal {
         } 
       }); 
     this.listaPerfiles.next(items);
+    return items;
   }
 
   //inserta perfil en la tabla
@@ -82,7 +82,12 @@ export class Bdlocal {
         'SELECT * FROM perfiles WHERE correo = ? AND password = ?',
         [correo, password]
       );
-      
+      if (resultado.rows.length > 0){
+        await this.database.executeSql(
+          'UPDATE perfiles SET login = 1 WHERE correo = ?',
+          [correo]
+        );
+      }
       return resultado.rows.length > 0;
     }catch (e){
       this.presentToast('Usuario incorrecto');
@@ -90,14 +95,13 @@ export class Bdlocal {
     }
   }
 
-  async autenticar(): Promise<boolean>{
+  async autenticar(correo: string): Promise<boolean>{
     const resultado = await this.database.executeSql(
-      'SELECT * FROM perfiles WHERE login = 1 LIMIT 1',
-      []
+      'SELECT * FROM perfiles WHERE login = 1 AND correo = ?',
+      [correo]
     );
     return resultado.rows.length > 0;
   }
-
 
   dbState() { 
     return this.isDbReady.asObservable(); 

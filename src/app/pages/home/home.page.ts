@@ -16,7 +16,7 @@ import { Storageservice } from 'src/app/services/storageservice';
 export class HomePage {
 
   usuario : any;
-  perfil: any = []
+  perfil: Perfil[] = []
   private _storage: Storage | null = null;
   constructor(private storage: Storage, private storageservice: Storageservice, private toastController: ToastController, private activatedRoute: ActivatedRoute, private router: Router, private bdlocal: Bdlocal)
   
@@ -38,7 +38,8 @@ export class HomePage {
       next: (data: Perfil[]) => {
         this.perfil = data;
         this.presentToast('middle', "Lista de usuarios!", 1000)
-      }
+      },
+    error: (err) => this.presentToast('middle','Error al cargar lista de usuarios', 1000)
     })
   }
 
