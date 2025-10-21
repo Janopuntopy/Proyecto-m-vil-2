@@ -13,7 +13,7 @@ import { Storageservice } from 'src/app/services/storageservice';
   styleUrls: ['home.page.scss'],
   standalone: false,
 })
-export class HomePage {
+export class HomePage implements OnInit{
 
   usuario : any;
   perfil: Perfil[] = []

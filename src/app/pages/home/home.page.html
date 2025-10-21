@@ -1,33 +1,40 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Bienvenido {{usuario}}!
-    </ion-title>
+<ion-app>
+  <ion-menu contentId="main-content">
+    <ion-header>
+      <ion-toolbar color="tertiary">
+        <ion-title>Hola</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-icon name="person-circle-outline">
+      </ion-icon> Usuario </ion-content>
+  </ion-menu>
+  <div class="ion-page" id="main-content">
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Bienvenido</ion-title>
+      </ion-toolbar>
+    </ion-header>
+<ion-footer>
+<ion-toolbar>
+    <ion-segment (ionChange)="segmentChanged($event)" value="uno">
+      <ion-segment-button value="uno">
+        <ion-icon name="home"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="dos">
+        <ion-icon name="game-controller-outline"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="tres">
+        <ion-icon name="diamond-outline"></ion-icon>
+      </ion-segment-button>
+    </ion-segment>
   </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>ver usuario</ion-card-title>
-      <ion-button expand="block" (click)="mostrarListaStorage()">Mostrar usuarios</ion-button>
-      <ion-list *ngIf="perfil.length > 0; else noUsuarios">
-      <ion-item *ngFor="let item of perfil">
-        <ion-label>
-          <h2>{{ item.nombre }}</h2>
-          <p>{{ item.correo }}</p>
-        </ion-label> 
-      </ion-item>
-      </ion-list>
-    </ion-card-header>
-
-    <ng-template #noUsuarios>
-      <ion-text color="medium">
-        <p class="ion-text-center">No hay usuarios registrados.</p>
-      </ion-text>
-    </ng-template>
-
-    <a href=".\inicio"> Volver</a>
-
-  </ion-card>
-</ion-content>
+  </ion-footer>
+    <ion-content class="ion-padding">
+        <ion-router-outlet></ion-router-outlet>
+    </ion-content>
+  </div>
+</ion-app>
