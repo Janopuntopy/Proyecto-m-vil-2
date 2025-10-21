@@ -11,7 +11,7 @@ import { Perfil } from '../clase/perfil';
 })
 export class Bdlocal {
   public database!: SQLiteObject; 
-  tblPerfil:string = "CREATE TABLE IF NOT EXISTS perfiles(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(100) NOT NULL, correo VARCHAR(100) NOT NULL, password VARCHAR(255) NOT NULL, telefono VARCHAR(50) NOT NULL, login INTEGER DEFAULT 0);"; 
+  tblPerfil:string = "CREATE TABLE IF NOT EXISTS perfil(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(100) NOT NULL, correo VARCHAR(100) NOT NULL, password VARCHAR(255) NOT NULL, telefono VARCHAR(50) NOT NULL, login INTEGER DEFAULT 0);"; 
 
   listaPerfiles = new BehaviorSubject<Perfil[]>([]); 
   private isDbReady: 
@@ -38,7 +38,6 @@ export class Bdlocal {
   async crearTablas() { 
     try { 
       await this.database.executeSql(this.tblPerfil, []); 
-      this.presentToast("Tabla creada"); 
       this.cargarPerfiles(); 
       this.isDbReady.next(true); 
     } catch (error) { 
@@ -49,7 +48,7 @@ export class Bdlocal {
   //trae todos los datos existentes
   cargarPerfiles() {
     let items: Perfil[] = []; 
-    this.database.executeSql('SELECT * FROM perfiles', []) 
+    this.database.executeSql('SELECT * FROM perfil', []) 
       .then(res => { 
         if (res.rows.length > 0) { 
           for (let i = 0; i < res.rows.length; i++) { 
@@ -69,12 +68,12 @@ export class Bdlocal {
   //inserta perfil en la tabla
   async agregarPerfil(nombre: any, correo: any, password: any, telefono: any) { 
     let data = [nombre,correo,password,telefono]; 
-    await this.database.executeSql('INSERT INTO perfiles(nombre,correo,password,telefono) VALUES(?,?,?,?)', data); 
+    await this.database.executeSql('INSERT INTO perfil(nombre,correo,password,telefono) VALUES(?,?,?,?)', data); 
     this.cargarPerfiles();
   }
 
   //verifica inicio de sesion con usuario existente
-  async login(correo: string, password: string): Promise<boolean>{
+  /*/async login(correo: string, password: string): Promise<boolean>{
     if (!this.database) return false;
 
     try{
@@ -93,11 +92,11 @@ export class Bdlocal {
       this.presentToast('Usuario incorrecto');
       return false;
     }
-  }
+  }*/
 
   async autenticar(correo: string): Promise<boolean>{
     const resultado = await this.database.executeSql(
-      'SELECT * FROM perfiles WHERE login = 1 AND correo = ?',
+      'SELECT * FROM perfil WHERE correo = ?',
       [correo]
     );
     return resultado.rows.length > 0;

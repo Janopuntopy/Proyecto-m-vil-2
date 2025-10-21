@@ -13,6 +13,8 @@ import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import { Apiservice } from './services/apiservice';
 
+import { Camera } from '@awesome-cordova-plugins/camera/ngx';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, 
@@ -22,7 +24,7 @@ import { Apiservice } from './services/apiservice';
             HttpClientModule],
   providers: [{ provide: RouteReuseStrategy, 
                 useClass: IonicRouteStrategy }, 
-                SQLite, Apiservice],
+                SQLite, Apiservice,Camera],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
