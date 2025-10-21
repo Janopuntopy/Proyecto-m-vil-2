@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Bdlocal } from 'src/app/services/bdlocal';
+import { Routeservice } from 'src/app/services/routeservice';
 import { Storageservice } from 'src/app/services/storageservice';
 import { Validaciones } from 'src/app/services/validaciones';
 
@@ -17,7 +18,7 @@ export class InicioPage implements OnInit {
   usuario: string = '';
   password: string = ''; 
 
-  constructor(private storage: Storageservice, private bdlocal: Bdlocal, private toastController: ToastController, private router:Router, private validaciones: Validaciones) { }
+  constructor(private routeservice: Routeservice, private storage: Storageservice, private bdlocal: Bdlocal, private toastController: ToastController, private router:Router, private validaciones: Validaciones) { }
 
   ngOnInit() {
     
@@ -38,7 +39,7 @@ export class InicioPage implements OnInit {
   }
 
   async inicioSesion(){
-    const exitoso = await this.storage.usuarioExiste()
+    const exitoso = await this.routeservice.estaAutenticado()
     if (exitoso){
       this.presentToast('top', 'Inicio exitoso!');
       let navigationExtras : NavigationExtras = {

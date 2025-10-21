@@ -30,10 +30,15 @@ const routes: Routes = [
     loadChildren: () => import('./pages/consumoapi/consumoapi.module').then( m => m.ConsumoapiPageModule)
   },
   {
+    path: 'tomarfoto',
+    loadChildren: () => import('./pages/tomarfoto/tomarfoto.module').then( m => m.TomarfotoPageModule)
+  },
+  {
     //ESTE PATH SIEMPRE VA AL FINAL, POR SU LECTURA SECUENCIAL
     path: '**',
     loadChildren: () => import('./pages/noencontrado/noencontrado.module').then( m => m.NoencontradoPageModule)
-  }
+  },
+
 
 
 

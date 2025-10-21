@@ -1,0 +1,14 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Tomar foto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-button expand="block" (click)="takeFoto()">Tomar foto</ion-button>
+
+  <div *ngIf="capturaImagen">
+    <h2>Vista previa:</h2>
+    <img [src]="capturaImagen" style="width: 100%; border-radius: 10px;" />
+  </div>
+</ion-content>
