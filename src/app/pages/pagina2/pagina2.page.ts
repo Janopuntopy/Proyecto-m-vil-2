@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { Perfiles } from 'src/app/interfaces/perfiles';
 import { Bdlocal } from 'src/app/services/bdlocal';
 import { Storageservice } from 'src/app/services/storageservice';
 import { Validaciones } from 'src/app/services/validaciones';
@@ -13,7 +14,14 @@ import { Validaciones } from 'src/app/services/validaciones';
 })
 export class Pagina2Page implements OnInit {
 
-  usuario: string = "";
+  usuario: Perfiles = {
+    nombre: '',
+    correo: '',
+    password: '',
+    telefono: ''
+  };
+
+  nombre: string = "";
   correo: string = "";
   password: string = "";
   telefono: string = "";
@@ -25,8 +33,19 @@ export class Pagina2Page implements OnInit {
   ngOnInit() {
   }
 
+  async registrar() {
+    const ok = await this.storageservice.registrarUsuario(this.usuario);
+    if (ok) {
+      alert('Usuario registrado con éxito');
+    } else {
+      alert('El correo ya está registrado');
+    }
+  }
+
+  //------------------------------------------------------
+
   async validarVacio(){
-    if (!this.validaciones.obligatorio(this.usuario)){
+    if (!this.validaciones.obligatorio(this.nombre)){
       this.presentToast('middle','Falta usuario');
       return;
     }
@@ -43,20 +62,21 @@ export class Pagina2Page implements OnInit {
       return;
     }
 
-    this.bdlocal.agregarPerfil(this.usuario,this.correo,this.password,this.telefono)
-    this.storageservice.guardarPerfiles(this.usuario, this.correo, this.password, this.telefono)
+    //this.bdlocal.agregarPerfil(this.usuario,this.correo,this.password,this.telefono)
+    await this.storageservice.set('perfiles', {nombre: this.nombre, correo: this.correo, password: this.password, telefono: this.telefono })
 
-    this.presentToast('middle','Usuario guardado con éxito');
+    this.presentToast('middle','éxito ' + this.nombre + this.correo);
+    
 
     let NavigationExtras: NavigationExtras = {
-      state: {usuario: this.usuario}
+      state: {usuario: this.nombre}
     }
     this.router.navigate(['/home'], NavigationExtras)
 
   }
 
   async guardarPerfil(){
-    await this.bdlocal.agregarPerfil(this.usuario, this.correo, this.password, this.telefono);
+    await this.bdlocal.agregarPerfil(this.nombre, this.correo, this.password, this.telefono);
     this.cargarPerfiles();
   }
   
@@ -65,11 +85,11 @@ export class Pagina2Page implements OnInit {
   }
 
   async presentToast(position: 'top' | 'middle' | 'bottom', msg : string, duration?:number ){
-  const toast = await this.toastController.create({
-    message : msg,
-    duration: duration?duration:1500,
-    position : position,
-  });
+    const toast = await this.toastController.create({
+      message : msg,
+      duration: duration?duration:1500,
+      position : position,
+    });
 
   await toast.present();
   

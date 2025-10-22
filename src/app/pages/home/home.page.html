@@ -6,9 +6,20 @@
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
-      <ion-icon name="person-circle-outline">
-      </ion-icon> Usuario </ion-content>
+
+      <ion-avatar>
+        <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+      </ion-avatar>
+
+      <ion-icon name="person-circle-outline"></ion-icon> Usuario 
+
+      <ion-button shape="round" routerLink="/tomarfoto">
+        <ion-icon slot="icon-only" name="camera"></ion-icon>
+      </ion-button>
+
+    </ion-content>
   </ion-menu>
+
   <div class="ion-page" id="main-content">
     <ion-header>
       <ion-toolbar>
@@ -19,6 +30,7 @@
       </ion-toolbar>
     </ion-header>
 <ion-footer>
+
 <ion-toolbar>
     <ion-segment (ionChange)="segmentChanged($event)" value="uno">
       <ion-segment-button value="uno">

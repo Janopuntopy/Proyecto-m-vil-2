@@ -1,3 +1,69 @@
-<p>
-  componente3 works!
-</p>
+<!--<ion-header>
+  <ion-toolbar>
+    <ion-title>Buscar Pokémon</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-item>
+      <ion-label position="floating">Nombre del Pokémon</ion-label>
+      <ion-input [(ngModel)]="pokemonName"></ion-input>
+    </ion-item>
+
+    <ion-button expand="block" (click)="buscarPokemon()">
+      Buscar
+    </ion-button>
+
+    <div *ngIf="nombre && tipo && ataque">
+      <h2>Nombre: {{ nombre }}</h2>
+      <h3>Tipo: {{ tipo }}</h3>
+      <h3>Ataque: {{ ataque }}</h3>
+    </div>
+  </ion-card>
+  <br>-->
+
+  <ion-card-header>
+    <ion-card-title>Listar Pokémon</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+      <ion-item>
+        <ion-input [(ngModel)]="pokemonName" placeholder="Buscar Pokémon..."></ion-input>
+        <ion-button (click)="buscaPokemon()">Buscar</ion-button>
+      </ion-item>
+
+      <ion-card>
+        <div *ngIf="pokemon">
+          <img [src]="pokemon.sprites.front_default" alt="{{pokemon.name}}">
+          <ion-card-header>
+            <ion-card-title>{{ pokemon.name | titlecase }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p>Altura: {{ pokemon.height }}</p>
+            <p>Peso: {{ pokemon.weight }}</p>
+          </ion-card-content>
+          <ion-button expand="full" color="success" (click)="guardarPokemon()">
+            Guardar
+          </ion-button>
+        </div>
+      </ion-card>
+
+      <ion-list>
+        <ion-list-header>Pokémon guardados</ion-list-header>
+        <ion-item *ngFor="let p of pokemoness">
+          <ion-avatar slot="start">
+            <img [src]="p.sprites.front_default">
+          </ion-avatar>
+          <ion-label>
+            <h2>{{ p.alias || (p.name | titlecase) }}</h2>
+            <p>Altura: {{ p.height }} | Peso: {{ p.weight }}</p>
+          </ion-label>
+          <ion-button color="warning" (click)="modificarPokemon(p)">Editar</ion-button>
+          <ion-button color="danger" (click)="eliminarPokemon(p.name)">Eliminar</ion-button>
+        </ion-item>
+      </ion-list>
+  </ion-card-content>
+
+
+
