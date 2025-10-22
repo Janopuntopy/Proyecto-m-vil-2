@@ -28,6 +28,14 @@ export class Apiservice {
     return this.http.get(`${this.apiURL}/pokemon/${name}`);
   }
 
+  //buscar info pokemon por id
+  getPokemonById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiURL}/${id}`);
+  }
+
+  getPokemonList(limit: number): Observable<any> {
+  return this.http.get<any>(`${this.apiURL}?limit=${limit}`);
+  }
 
   //ejemplo api resfull documentacion
 

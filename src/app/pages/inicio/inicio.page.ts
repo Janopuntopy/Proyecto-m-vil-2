@@ -14,20 +14,45 @@ import { Validaciones } from 'src/app/services/validaciones';
 })
 export class InicioPage implements OnInit {
 
-  //declarar un modelo para validar
-  usuario: string = '';
-  password: string = ''; 
+  correo = '';
+  password = '';
 
-  constructor(private routeservice: Routeservice, private storage: Storageservice, private bdlocal: Bdlocal, private toastController: ToastController, private router:Router, private validaciones: Validaciones) { }
+  //declarar un modelo para validar
+  /*/nombre: string = "";
+  correo: string = "";
+  password: string = "";
+  telefono: string = "";*/
+
+  perfiles: any = [];
+
+  constructor(private routeservice: Routeservice, private storageservice: Storageservice, private bdlocal: Bdlocal, private toastController: ToastController, private router:Router, private validaciones: Validaciones) { }
 
   ngOnInit() {
-    
+    this.storageservice.Init();
   }
+
+  async login() {
+    const ok = await this.storageservice.login(this.correo, this.password);
+    if (ok) {
+      alert('Inicio de sesión exitoso');
+      this.router.navigate(['/home']);
+    } else {
+      alert('Correo o contraseña incorrectos');
+    }
+  }
+
+  async cerrarSesion() {
+    await this.storageservice.logout();
+    alert('Sesión cerrada');
+    this.router.navigate(['/login']);
+  }
+
+  //------------------------------------------------------------------------------------
 
   //validateModel sirve para validar que singrese algo en los campos del html medieante su modelo
 
   validarVacio(){
-    if (!this.validaciones.obligatorio(this.usuario)){
+    if (!this.validaciones.obligatorio(this.correo)){
       this.presentToast('middle','Falta usuario');
       return;
     }
@@ -35,11 +60,28 @@ export class InicioPage implements OnInit {
       this.presentToast('middle','Falta contraseña');
       return;
     }
-    this.inicioSesion();
+
+    this.router.navigate(['/home']);
+    //this.Inicio();
+    //this.inicioSesion();
   }
 
+
+  async Inicio(){
+    //const datos = await this.storage.exists('perfil')
+    const valido = await this.storageservice.autentica(this.correo, this.password);
+
+    if (valido === true) {
+      this.presentToast('top','Inicio de sesión exitoso',2000);
+      this.router.navigate(['/home']);
+    } else {
+      this.presentToast('top','Correo o contraseña incorrectos',2000);
+    }  
+  } 
+
+/*/
   async inicioSesion(){
-    const exitoso = await this.routeservice.estaAutenticado()
+    const exitoso = await this.storage.buscarPerfil('correo')
     if (exitoso){
       this.presentToast('top', 'Inicio exitoso!');
       let navigationExtras : NavigationExtras = {
@@ -50,6 +92,7 @@ export class InicioPage implements OnInit {
       this.presentToast('top', 'Usuario o contraseña incorrectos');
     }
   }
+*/
 
   async presentToast(position: 'top' | 'middle' | 'bottom', msg : string, duration?:number ){
     const toast = await this.toastController.create({
@@ -59,6 +102,6 @@ export class InicioPage implements OnInit {
     });
 
     await toast.present();
-    
+
   }
 }

@@ -12,6 +12,12 @@ Injectable({
 
 export class AuthGuard implements CanActivate {
 
+  correo: string = "";
+  password: string = "";
+
+  perfiles: any = [];
+
+
   constructor(private storageservice: Storageservice ,private routeservice: Routeservice , private router: Router, private toastcontroller: ToastController){}
 
   async canActivate(): Promise<boolean> {
@@ -20,7 +26,7 @@ export class AuthGuard implements CanActivate {
     const state = navigation?.extras?.state as { correo?: string };
     const correo = state?.correo || '';
     const autenticado = await this.bdlocal.autenticar(correo);*/
-    const hayUsuario = await this.storageservice.buscarPerfil('correo'); 
+    const hayUsuario = await this.storageservice.get('perfiles'); 
     if (!hayUsuario){
       this.presentToast('middle','no ingresa')
       this.router.navigate(['/inicio']);

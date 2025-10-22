@@ -14,6 +14,7 @@ export class Routeservice {
 
   constructor(public toastcontroller: ToastController, private storage: Storageservice, private bdlocal: Bdlocal){} 
 
+/*/
   //metodo para saber si hay usuario registrado consultando a SQLite
   async estaAutenticado(): Promise<boolean> {
     await this.storage.buscarPerfil('correo');
@@ -30,6 +31,7 @@ export class Routeservice {
   async cerrarSesion(): Promise<void> {
     await this.storage.remove('usuario');
   }
+*/
 
   async presentToast(mensaje: string){
     const toast = await this.toastcontroller.create({

@@ -17,6 +17,7 @@ export class Validaciones {
     return formatoEmail.test(value);
   }
 
+  //validar numero
   validaNum(value: string, minLength: number = 9): boolean {
      if (!value) return false;
     return value.length >= minLength && /^[0-9]+$/.test(value);

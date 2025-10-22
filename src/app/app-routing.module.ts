@@ -6,7 +6,7 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule),
-    canActivate: [AuthGuard] // aqui protege la ruta
+    //canActivate: [AuthGuard] // aqui protege la ruta
   },
   {
     path: '',
@@ -38,9 +38,6 @@ const routes: Routes = [
     path: '**',
     loadChildren: () => import('./pages/noencontrado/noencontrado.module').then( m => m.NoencontradoPageModule)
   },
-
-
-
 
 
 ];
