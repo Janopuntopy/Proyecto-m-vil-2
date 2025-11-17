@@ -5,27 +5,26 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-<ion-card>
-  <img alt="Silhouette of mountains" src="https://i.blogs.es/7297f7/puerta-pesada-silksong/1366_2000.jpeg" style="width:500px; height:auto; border-radius:15px;"/>
-  <ion-card-header>
-    <ion-card-title></ion-card-title>
-    <ion-card-subtitle></ion-card-subtitle>
-  </ion-card-header>
+  <ion-card>
+    <img alt="Silhouette of mountains" src="https://i.blogs.es/7297f7/puerta-pesada-silksong/1366_2000.jpeg" style="width:500px; height:auto; border-radius:15px;"/>
+    <ion-card-header>
+      <ion-card-title></ion-card-title>
+      <ion-card-subtitle></ion-card-subtitle>
+    </ion-card-header>
 
-  <ion-list>
     <ion-item>
-      <ion-input label="Nueva contraseña" label-placement="floating" placeholder=""></ion-input>
-    </ion-item> 
-  </ion-list>
+      <ion-label position="floating">Nueva contraseña</ion-label>
+      <ion-input [(ngModel)]="pass1" type="password"></ion-input>
+    </ion-item>
 
-  <ion-list>
     <ion-item>
-      <ion-input label="Repetir contraseña" label-placement="floating" placeholder=""></ion-input>
-    </ion-item> 
-  </ion-list>
-  <br>
-  <a href=".\inicio"> Volver</a>
+      <ion-label position="floating">Repetir contraseña</ion-label>
+      <ion-input [(ngModel)]="pass2" type="password"></ion-input>
+    </ion-item>
 
+    <ion-button expand="full" (click)="cambiar()">
+      Cambiar
+    </ion-button>
 
-</ion-card>
+  </ion-card>
 </ion-content>
