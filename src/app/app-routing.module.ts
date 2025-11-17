@@ -37,7 +37,15 @@ const routes: Routes = [
     //ESTE PATH SIEMPRE VA AL FINAL, POR SU LECTURA SECUENCIAL
     path: '**',
     loadChildren: () => import('./pages/noencontrado/noencontrado.module').then( m => m.NoencontradoPageModule)
+  },  {
+    path: 'solicitacodigo',
+    loadChildren: () => import('./pages/solicitacodigo/solicitacodigo.module').then( m => m.SolicitacodigoPageModule)
   },
+  {
+    path: 'ingresacodigo',
+    loadChildren: () => import('./pages/ingresacodigo/ingresacodigo.module').then( m => m.IngresacodigoPageModule)
+  },
+
 
 
 ];

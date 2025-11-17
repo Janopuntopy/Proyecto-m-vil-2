@@ -1,0 +1,18 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>ingresa codigo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-item>
+    <ion-label position="floating">Código recibido</ion-label>
+    <ion-input [(ngModel)]="code"></ion-input>
+  </ion-item>
+
+  <ion-button expand="full" (click)="validar()">
+    Validar código
+  </ion-button>
+
+</ion-content>
