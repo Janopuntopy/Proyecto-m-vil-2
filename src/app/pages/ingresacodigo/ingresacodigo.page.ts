@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-ingresacodigo',
@@ -11,7 +12,7 @@ export class IngresacodigoPage implements OnInit {
 
   codigo = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private storage: Storage) {}
 
   validarCodigo(){
     const codigoGuardado = localStorage.getItem('reset_code');
@@ -21,6 +22,17 @@ export class IngresacodigoPage implements OnInit {
       this.router.navigate([''])
     }else{
       alert("codigo incorrecto.");
+    }
+  }
+
+  async validarCodigoIngresado(codigoIngresado: string) {
+
+    const codigoGuardado = await this.storage.get('reset_code');
+
+    if (codigoIngresado === codigoGuardado) {
+      return { ok: true };
+    } else {
+      return { ok: false, reason: 'wrong' };
     }
   }
 

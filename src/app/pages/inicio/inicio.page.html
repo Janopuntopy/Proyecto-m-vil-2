@@ -13,6 +13,7 @@
       alt="Imagen desde internet" 
       style="width: 250px; height: 250px; border-radius: 10px;" />
     </div>
+
     <ion-list>
       <ion-item>
         <ion-thumbnail slot="start">
@@ -28,13 +29,16 @@
         <ion-input label="Clave" type="password" [(ngModel)]="password"></ion-input>
       </ion-item>
     </ion-list>
+
     <br>
-    <ion-button expand="block" (click)="validarVacio()">Iniciar sesión</ion-button>
+    <ion-button expand="block" (click)="login()">Iniciar sesión</ion-button>
+
     <br>
     <div style="display: flex; justify-content: space-between;">
       <a href=".\pagina2"> Crear cuenta</a>
-      <a href=".\recuperapass">Cambiar contraseña</a>
+      <a href=".\solicitacodigo">Cambiar contraseña</a>
     </div>
+    
     <br>
     <a href=".\tomarfoto">Tomar foto</a>
 

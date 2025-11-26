@@ -28,4 +28,3 @@ export class RecuperapassPage implements OnInit {
   }
 
 }
-//RECUERDA QUE NO HAS HECHO COMMIT NI GUARDADO EN EL GIT 13/11/2025

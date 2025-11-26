@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Storageservice } from 'src/app/services/storageservice';
 
 @Component({
   selector: 'app-home',
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class HomePage implements OnInit{
 
-  constructor( private router : Router) {}
+  constructor( private router : Router, private storageservice: Storageservice) {}
 
   ngOnInit() {
     
@@ -22,4 +23,9 @@ export class HomePage implements OnInit{
     this.router.navigate(['home/'+direccion])
   }
 
+
+  logout() {
+    this.storageservice.logout();
+    this.router.navigate(['/inicio'], {state: {reset: true}});
+  }
 }

@@ -37,29 +37,4 @@ export class Apiservice {
   return this.http.get<any>(`${this.apiURL}?limit=${limit}`);
   }
 
-  //ejemplo api resfull documentacion
-
-  /*/getPost(): Observable<any>{
-    return this.http.get(this.apiURL+'/posts/').pipe(
-      retry(3)
-    );
-  }
-
-  getPostID(id: any): Observable<any>{
-    return this.http.get(this.apiURL+'/posts/'+id).pipe(
-    retry(3)
-    );
-  }
-
-  createPost(post: any):Observable<any>{
-    return this.http.post(this.apiURL+'/posts',post,this.httpOptions).pipe(
-    retry(3)
-    );
-  }
-
-  updatePost(id: any,post: any):Observable<any>{
-    return this.http.put(this.apiURL+'/post/'+id,post,this.httpOptions).pipe(retry(3));
-  }*/
-
-
 }

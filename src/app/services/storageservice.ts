@@ -25,7 +25,7 @@ export class Storageservice {
     this._storage = storage;
   }
 
-  // Registrar usuario
+  //-------Registrar usuario---------
   async registrarUsuario(usuario: Perfiles): Promise<boolean> {
     const usuarios: Perfiles[] = (await this._storage?.get(this.usuariosKey)) || [];
   
@@ -33,7 +33,10 @@ export class Storageservice {
     const existe = usuarios.find(u => u.correo === usuario.correo);
     if (existe) return false;
 
-     usuarios.push(usuario);
+    //Registrar el usuario
+    usuarios.push(usuario);
+
+    //Guardar nuevamente la lista
     await this._storage?.set(this.usuariosKey, usuarios);
     return true;
   }
@@ -42,15 +45,27 @@ export class Storageservice {
     const usuarios: Perfiles[] = (await this._storage?.get(this.usuariosKey)) || [];
 
     const usuario = usuarios.find(u => u.correo === correo && u.password === password);
-    if (usuario) {
-      await this._storage?.set(this.sesionKey, usuario);
-      return true;
-    }
+    if (!usuario) return false;
 
-    return false;
+    //await this._storage?.set(this.sesionKey, usuario);
+    //return true;
+  
+    return true;
   }
 
-  // Obtener usuario logueado
+  private async ensureInit() {
+    if (this._storage === null) {
+      this._storage = await this.storage.create();
+      }
+  }
+
+  // Guardar sesión
+  async guardarSesion(usuario: any): Promise<void> {
+    await this.ensureInit();
+    await this._storage!.set(this.sesionKey, usuario);
+  }
+
+  // Obtener sesión
   async getUsuarioSesion(): Promise<Perfiles | null> {
     return await this._storage?.get(this.sesionKey) || null;
   }
@@ -111,7 +126,7 @@ export class Storageservice {
     }
   }
 
-//-------------------------------------------------------------------------------------------------------
+//--------------------------------------------API POKEMON-----------------------------------------------------------
 
  // Guardar toda la lista
   async savePokemones(pokemons: any[]) {
@@ -146,60 +161,6 @@ export class Storageservice {
       await this.savePokemones(list);
     }
   }
-
-  
-/*/
-  //registra perfil de usuario y si el correo se encuentra registrado, no permite el registro.
-  async guardarPerfiles(nombre: string, correo: string,  password: string, telefono: string){
-    const existe = this.perfiles.find(c => c.correo === correo);
-    if (!existe){
-      this.perfiles.unshift({nombre:nombre, correo:correo, password:password, telefono:telefono})
-      await this._storage?.set('perfiles',this.perfiles);
-      this.presentToast("Usuario agregado con éxito!")
-    }else{
-      this.presentToast("Ya existe un usuario con el correo ingresado.")
-      return;
-    }
-  }
-
-  async get(key: string){
-    return await this._storage?.get(key);
-  }
-
-  async remove(key: string){
-    await this._storage?.remove(key);
-  }
-  
-  //busca TODOS los perfiles
-  async cargarPerfil(){
-    const userPerfil = await this.storage.get('perfiles');
-    if(userPerfil){
-      this.perfiles=userPerfil;
-    }
-  }
-
-  //busca perfil especifico
-
-  async quitarPerfiles(correo: string){
-    const existe=this.perfiles.find(c =>c.correo === correo)
-    if (existe){
-      this.perfiles=this.perfiles.filter(c=>c.correo!== correo);
-      this._storage?.set('perfiles',this.perfiles);
-      this.presentToast("Se ha eliminado perfil")
-    }else{
-      this.presentToast("El correo no se encuentra registrado")
-    }
-  }
-
-  //elimina toda la informacion del storage además de la lista perfiles
-  async borrarBD(){
-    await this._storage?.clear();
-    this.perfiles=[];
-    console.log(this.perfiles.length);
-    this.presentToast("Se ha eliminado la BD");
-  }
-*/
-
 
   async presentToast(mensaje: string){
     const toast = await this.toastController.create({

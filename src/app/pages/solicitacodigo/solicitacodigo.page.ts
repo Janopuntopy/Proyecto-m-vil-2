@@ -21,14 +21,13 @@ export class SolicitacodigoPage implements OnInit {
       alert("Ingresa un correo válido.");
       return;
     }
- 
 
-  const respesta = await this.emailservice.enviarCodigo(this.email);
+    const respuesta = await this.emailservice.enviarCodigo(this.email);
 
-  if (respesta.ok) {
-      alert("Se ha enviado un correo con tu código de recuperación.");
-    } else {
-      alert("Error enviando correo.");
+    if (respuesta.ok) {
+        alert("Se ha enviado un correo con tu código de recuperación.");
+      } else {
+        alert("Error enviando correo.");
+      }
   }
- }
 }

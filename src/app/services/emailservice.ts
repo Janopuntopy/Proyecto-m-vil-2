@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import emailjs from '@emailjs/browser';
 import { NavParams } from '@ionic/angular';
+import { Storage } from '@ionic/storage-angular';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -8,18 +9,19 @@ import { environment } from 'src/environments/environment';
 })
 export class Emailservice {
   
-  constructor() {}
+  constructor(private storage: Storage) {}
 
- async enviarCodigo(correo: string) {
+ async enviarCodigo(correo: string, nombre = '') {
     const codigo = Math.floor(100000 + Math.random() * 900000).toString();
 
-    localStorage.setItem('reset_email', correo);
-    localStorage.setItem('reset_code', codigo);
+    await this.storage['set']('reset_email', correo);
+    await this.storage['set']('reset_code', codigo);
 
     const params = {
-      to_email: correo,
+      email: correo,
       code: codigo,
-      message: `Tu código de recuperación es: ${codigo}`
+      name: nombre,
+      link: 'localhost:8102/ingresacodigo'
     };
 
      try {
@@ -30,7 +32,7 @@ export class Emailservice {
         environment.emailjs.publicKey
       );
 
-      return { ok: true, result: resultado };
+      return { ok: true, codigo, correo, result: resultado };
 
     } catch (error) {
       console.error('Error EmailJS', error);

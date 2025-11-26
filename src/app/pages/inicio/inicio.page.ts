@@ -17,12 +17,6 @@ export class InicioPage implements OnInit {
   correo = '';
   password = '';
 
-  //declarar un modelo para validar
-  /*/nombre: string = "";
-  correo: string = "";
-  password: string = "";
-  telefono: string = "";*/
-
   perfiles: any = [];
 
   constructor(private routeservice: Routeservice, private storageservice: Storageservice, private bdlocal: Bdlocal, private toastController: ToastController, private router:Router, private validaciones: Validaciones) { }
@@ -34,17 +28,25 @@ export class InicioPage implements OnInit {
   async login() {
     const ok = await this.storageservice.login(this.correo, this.password);
     if (ok) {
-      alert('Inicio de sesión exitoso');
+      this.presentToast('middle','Inicio exitoso!',1500);
       this.router.navigate(['/home']);
     } else {
-      alert('Correo o contraseña incorrectos');
+      this.presentToast('middle','error en correo o contraseña.',1500);
     }
   }
 
   async cerrarSesion() {
     await this.storageservice.logout();
-    alert('Sesión cerrada');
+    this.presentToast('middle','Sesión finalizada...',1500);
     this.router.navigate(['/login']);
+  }
+
+  ionViewWillEnter() {
+    const state = this.router.getCurrentNavigation()?.extras.state;
+    if (state?.['reset']) {
+      this.correo = '';
+      this.password = '';
+    }
   }
 
   //------------------------------------------------------------------------------------
@@ -62,13 +64,10 @@ export class InicioPage implements OnInit {
     }
 
     this.router.navigate(['/home']);
-    //this.Inicio();
-    //this.inicioSesion();
   }
 
-
   async Inicio(){
-    //const datos = await this.storage.exists('perfil')
+
     const valido = await this.storageservice.autentica(this.correo, this.password);
 
     if (valido === true) {
@@ -78,21 +77,6 @@ export class InicioPage implements OnInit {
       this.presentToast('top','Correo o contraseña incorrectos',2000);
     }  
   } 
-
-/*/
-  async inicioSesion(){
-    const exitoso = await this.storage.buscarPerfil('correo')
-    if (exitoso){
-      this.presentToast('top', 'Inicio exitoso!');
-      let navigationExtras : NavigationExtras = {
-        state : {usuario : this.usuario}
-      }
-      this.router.navigate(['/home'], navigationExtras);    
-    }else{
-      this.presentToast('top', 'Usuario o contraseña incorrectos');
-    }
-  }
-*/
 
   async presentToast(position: 'top' | 'middle' | 'bottom', msg : string, duration?:number ){
     const toast = await this.toastController.create({

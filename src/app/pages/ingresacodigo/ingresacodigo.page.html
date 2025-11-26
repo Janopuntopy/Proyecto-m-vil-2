@@ -8,10 +8,10 @@
 
   <ion-item>
     <ion-label position="floating">Código recibido</ion-label>
-    <ion-input [(ngModel)]="code"></ion-input>
+    <ion-input [(ngModel)]="codigo"></ion-input>
   </ion-item>
 
-  <ion-button expand="full" (click)="validar()">
+  <ion-button expand="full" (click)="validarCodigoIngresado(codigo)">
     Validar código
   </ion-button>
 

@@ -12,27 +12,21 @@ Injectable({
 
 export class AuthGuard implements CanActivate {
 
-  correo: string = "";
-  password: string = "";
-
-  perfiles: any = [];
-
-
   constructor(private storageservice: Storageservice ,private routeservice: Routeservice , private router: Router, private toastcontroller: ToastController){}
 
   async canActivate(): Promise<boolean> {
-    /*/const autenticado = await this.bdlocal.autenticar(correo: String) Promise<boolean>;
-    const navigation = this.router.getCurrentNavigation();
-    const state = navigation?.extras?.state as { correo?: string };
-    const correo = state?.correo || '';
-    const autenticado = await this.bdlocal.autenticar(correo);*/
-    const hayUsuario = await this.storageservice.get('perfiles'); 
-    if (!hayUsuario){
-      this.presentToast('middle','no ingresa')
-      this.router.navigate(['/inicio']);
-      return false;
-    }
+    const hayUsuario = await this.storageservice.getUsuarioSesion();   
 
+    if (hayUsuario) {
+      const perfiles = await this.storageservice.get('perfiles'); 
+      const existe = perfiles?.find((p: any) => p.correo === hayUsuario.correo);
+      
+      if(existe){
+        return true;
+      }      
+    }
+  
+    this.router.navigate(['/inicio']);
     return false;
   }
 
@@ -47,4 +41,3 @@ export class AuthGuard implements CanActivate {
   }
 
 }
-

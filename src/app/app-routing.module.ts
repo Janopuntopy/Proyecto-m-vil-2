@@ -34,10 +34,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/tomarfoto/tomarfoto.module').then( m => m.TomarfotoPageModule)
   },
   {
-    //ESTE PATH SIEMPRE VA AL FINAL, POR SU LECTURA SECUENCIAL
-    path: '**',
-    loadChildren: () => import('./pages/noencontrado/noencontrado.module').then( m => m.NoencontradoPageModule)
-  },  {
     path: 'solicitacodigo',
     loadChildren: () => import('./pages/solicitacodigo/solicitacodigo.module').then( m => m.SolicitacodigoPageModule)
   },
@@ -45,8 +41,11 @@ const routes: Routes = [
     path: 'ingresacodigo',
     loadChildren: () => import('./pages/ingresacodigo/ingresacodigo.module').then( m => m.IngresacodigoPageModule)
   },
-
-
+  {
+    //ESTE PATH SIEMPRE VA AL FINAL, POR SU LECTURA SECUENCIAL
+    path: '**',
+    loadChildren: () => import('./pages/noencontrado/noencontrado.module').then( m => m.NoencontradoPageModule)
+  }
 
 ];
 
