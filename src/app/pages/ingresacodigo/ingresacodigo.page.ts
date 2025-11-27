@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 
 @Component({
@@ -12,28 +13,27 @@ export class IngresacodigoPage implements OnInit {
 
   codigo = '';
 
-  constructor(private router: Router, private storage: Storage) {}
+  constructor(private router: Router, private storage: Storage, private toastcontroller: ToastController) {}
 
-  validarCodigo(){
-    const codigoGuardado = localStorage.getItem('reset_code');
-
+  async validarCodigo(){
+    const codigoGuardado = await this.storage.get('reset_code');
     if(this.codigo === codigoGuardado){
-      alert("codigo correcto!");
-      this.router.navigate([''])
+      this.presentToast('middle','codigo correcto!',1500);
+      this.router.navigate(['/recuperapass'])
     }else{
-      alert("codigo incorrecto.");
+      this.presentToast('middle','codigo incorrecto...',1500);
     }
   }
 
-  async validarCodigoIngresado(codigoIngresado: string) {
+  async presentToast(position: 'top' | 'middle' | 'bottom', msg : string, duration?:number ){
+  const toast = await this.toastcontroller.create({
+    message : msg,
+    duration: duration?duration:1500,
+    position : position,
+  });
 
-    const codigoGuardado = await this.storage.get('reset_code');
+  await toast.present();
 
-    if (codigoIngresado === codigoGuardado) {
-      return { ok: true };
-    } else {
-      return { ok: false, reason: 'wrong' };
-    }
   }
 
   ngOnInit() {

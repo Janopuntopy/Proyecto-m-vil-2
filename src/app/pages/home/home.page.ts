@@ -23,9 +23,9 @@ export class HomePage implements OnInit{
     this.router.navigate(['home/'+direccion])
   }
 
-
   logout() {
     this.storageservice.logout();
     this.router.navigate(['/inicio'], {state: {reset: true}});
   }
+  
 }
