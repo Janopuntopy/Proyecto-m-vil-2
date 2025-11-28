@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Emailservice } from 'src/app/services/emailservice';
 import { Validaciones } from 'src/app/services/validaciones';
@@ -14,7 +15,7 @@ export class SolicitacodigoPage implements OnInit {
   email = '';
   nombre = '';
 
-  constructor(private emailservice: Emailservice, private toastcontroller: ToastController, private validaciones: Validaciones) {}
+  constructor(private router: Router,private emailservice: Emailservice, private toastcontroller: ToastController, private validaciones: Validaciones) {}
 
   ngOnInit() {
   }
@@ -30,6 +31,7 @@ export class SolicitacodigoPage implements OnInit {
 
       if (respuesta.ok) {
         this.presentToast("middle","Codigo enviado correctamente!",1500);
+        this.router.navigate(['/ingresacodigo']);
         } else {
           this.presentToast("middle","Error al enviar código...",1500);
         }

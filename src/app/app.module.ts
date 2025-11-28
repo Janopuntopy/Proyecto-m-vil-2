@@ -14,13 +14,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { Apiservice } from './services/apiservice';
 
 import { Camera } from '@awesome-cordova-plugins/camera/ngx';
+import { Drivers } from '@ionic/storage';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, 
             IonicModule.forRoot(), 
             AppRoutingModule, 
-            IonicStorageModule.forRoot(),
+            IonicStorageModule.forRoot({
+            name: 'mydb',
+            driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage]
+    }),
             HttpClientModule],
   providers: [{ provide: RouteReuseStrategy, 
                 useClass: IonicRouteStrategy }, 
