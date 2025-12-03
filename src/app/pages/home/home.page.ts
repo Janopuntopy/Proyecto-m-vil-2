@@ -10,7 +10,15 @@ import { Storageservice } from 'src/app/services/storageservice';
 })
 export class HomePage implements OnInit{
 
-  constructor( private router : Router, private storageservice: Storageservice) {}
+  nombre = '';
+
+  constructor( private router : Router, private storageservice: Storageservice) {
+    const nav = this.router.getCurrentNavigation();
+
+    if (nav?.extras.state){
+      this.nombre = nav.extras.state['usuario'];
+    }
+  }
 
   ngOnInit() {
     

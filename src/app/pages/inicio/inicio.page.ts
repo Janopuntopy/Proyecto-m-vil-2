@@ -14,6 +14,7 @@ import { Validaciones } from 'src/app/services/validaciones';
 })
 export class InicioPage implements OnInit {
 
+  nombre = '';
   correo = '';
   password = '';
 
@@ -25,23 +26,15 @@ export class InicioPage implements OnInit {
     this.storageservice.Init();
   }
 
-  /*/async login() {
-    const correoGuardado = await this.storageservice.get('user_email');
-    const passGuardada   = await this.storageservice.get('user_password');
-
-    if (this.correo === correoGuardado && this.password === passGuardada) {
-        this.presentToast('middle', 'Inicio de sesión exitoso', 1500);
-        this.router.navigate(['/home']);
-    } else {
-        this.presentToast('middle', 'Correo o contraseña incorrectos', 1500);
-    }
-  }/*/
-
   async login() {
     const ok = await this.storageservice.login(this.correo, this.password);
     if (ok) {
       this.presentToast('middle','Inicio exitoso!',1500);
-      this.router.navigate(['/home']);
+      
+      let NavigationExtras: NavigationExtras = {
+      state: {usuario: this.nombre}
+      }
+      this.router.navigate(['/home'], NavigationExtras);
     } else {
       this.presentToast('middle','error en correo o contraseña.',1500);
     }

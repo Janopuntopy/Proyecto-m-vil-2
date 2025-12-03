@@ -15,7 +15,6 @@ import { Validaciones } from 'src/app/services/validaciones';
 })
 export class Pagina2Page implements OnInit {
 
-
     nombre = '';
     correo = '';
     password = '';
@@ -77,7 +76,7 @@ export class Pagina2Page implements OnInit {
     let NavigationExtras: NavigationExtras = {
       state: {usuario: this.nombre}
     }
-    this.router.navigate(['/inicio'], NavigationExtras)
+    this.router.navigate(['/inicio'])
 
   }
 
